@@ -15,7 +15,7 @@
     }
 
     $(window).load(function () {
-        $('svg.animate-svg').each(function (i, el) {
+        $('.animate-svg').each(function (i, el) {
             vsvgInitElement(el);
         })
     })
