@@ -27,7 +27,7 @@ class Vsvg_Admin {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @var      string $plugin_name The ID of this plugin.
 	 */
 	private $plugin_name;
 
@@ -36,7 +36,7 @@ class Vsvg_Admin {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @var      string $version The current version of this plugin.
 	 */
 	private $version;
 
@@ -44,13 +44,14 @@ class Vsvg_Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 *
+	 * @param      string $plugin_name The name of this plugin.
+	 * @param      string $version The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 
@@ -60,21 +61,7 @@ class Vsvg_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Vsvg_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Vsvg_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/vsvg-admin.css', array(), $this->version, 'all' );
-
+//		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/vsvg-admin.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -83,21 +70,49 @@ class Vsvg_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
+//		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/vsvg-admin.js', array( 'jquery' ), $this->version, false );
+	}
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Vsvg_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Vsvg_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+	/**
+	 * Add an notice to install the SVG support plugin
+	 *
+	 * @since 1.0.0
+	 */
+	public function svg_support_reminder() {
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/vsvg-admin.js', array( 'jquery' ), $this->version, false );
+		if ( is_plugin_active( 'svg-support/svg-support.php' ) ) {
+			return;
+		}
 
+		$plugins   = get_plugins();
+		$installed = false;
+		foreach ( $plugins as $plugin ) {
+			if ( $this->plugin_name === $plugin['TextDomain'] ) {
+				$installed = true;
+				break;
+			}
+		}
+
+		$action = 'install-plugin';
+		$slug   = 'svg-support';
+		$link   = wp_nonce_url( add_query_arg( array(
+			'action' => $action,
+			'plugin' => $slug
+		), admin_url( 'update.php' ) ), $action . '_' . $slug );
+		?>
+        <div class="notice notice-info is-dismissible">
+            <p><?php _e( 'To easy insert animated SVG, install the SVG support plugin', 'vsvg' ); ?></p>
+            <p>
+				<?php if ( ! $installed ) : ?>
+                    <a href="<?php echo $link ?>" class="button button-primary"><?php _e( 'Install Now', 'vsvg' ) ?></a>
+				<?php else : ?>
+                    <a href="<?php echo esc_url_raw( self_admin_url( 'plugins.php' ) ); ?>"
+                       class="button button-primary"><?php _e( 'Activate Now', 'vsvg' ) ?></a>
+				<?php endif ?>
+
+            </p>
+        </div>
+		<?php
 	}
 
 }

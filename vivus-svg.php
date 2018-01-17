@@ -5,8 +5,8 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Vivus SVG Animation
- * Plugin URI:        http://viewup.com.br/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Plugin URI:        https://github.com/viewup/wp-vivus-svg
+ * Description:       Vivus SVG Animation for WordPress
  * Version:           1.0.0
  * Author:            Viewup
  * Author URI:        http://viewup.com.br/
@@ -26,7 +26,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'PLUGIN_NAME_VERSION', '1.0.0' );
+define( 'VSVG_VERSION', '1.0.0' );
 
 /**
  * The code that runs during plugin activation.

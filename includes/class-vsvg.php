@@ -35,7 +35,7 @@ class Vsvg {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Vsvg_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Vsvg_Loader $loader Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -44,7 +44,7 @@ class Vsvg {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 * @var      string $plugin_name The string used to uniquely identify this plugin.
 	 */
 	protected $plugin_name;
 
@@ -53,7 +53,7 @@ class Vsvg {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
+	 * @var      string $version The current version of the plugin.
 	 */
 	protected $version;
 
@@ -67,8 +67,8 @@ class Vsvg {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'PLUGIN_NAME_VERSION' ) ) {
-			$this->version = PLUGIN_NAME_VERSION;
+		if ( defined( 'VSVG_VERSION' ) ) {
+			$this->version = VSVG_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
@@ -103,24 +103,24 @@ class Vsvg {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vsvg-loader.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-vsvg-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vsvg-i18n.php';
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-vsvg-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-vsvg-admin.php';
+		require_once plugin_dir_path( __DIR__ ) . 'admin/class-vsvg-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-vsvg-public.php';
+		require_once plugin_dir_path( __DIR__ ) . 'public/class-vsvg-public.php';
 
 		$this->loader = new Vsvg_Loader();
 
@@ -151,11 +151,11 @@ class Vsvg {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-
 		$plugin_admin = new Vsvg_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_notices', $plugin_admin, 'svg_support_reminder' );
 
 	}
 
